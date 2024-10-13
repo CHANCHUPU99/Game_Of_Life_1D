@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameOfLifeOneDimension : MonoBehaviour
 {
     public Button startGameOfLife;
-    public InputField xRowInput, yColumnsInput, ruleNumber;
+    public TMP_InputField xRowInput, yColumnsInput, ruleNumber;
     public bool bRandomActivaded, bSteppedModeActivated;
     public Toggle randomMode, steppedMode;
     private int[,] cellsGrid;
@@ -24,7 +25,7 @@ public class GameOfLifeOneDimension : MonoBehaviour
     {
         
     }
-    //aqui solo creo toda la grid por lo que todas deberian estar muertas
+    //aqui solo creo toda la grid por lo que todas deben estar muertas
     void createGrid() {
         for(int i = 0;i < currentXSize; i++) {
             for(int c = 0;c < currentYSize; c++) {
@@ -55,7 +56,7 @@ public class GameOfLifeOneDimension : MonoBehaviour
     }
 
     public void gameOfLifeRules() {
-
+        //preguntar como hacer esto de lo binario
     }
 
     //funcion para crear todo de una 
@@ -64,10 +65,10 @@ public class GameOfLifeOneDimension : MonoBehaviour
 
         }
     }
-    //funcion para randomizar
+    //funcion para randomizar el grid(falta preguntar)
     void randomGrid() {
         for(int i = 0;i < currentXSize;i++) {
-            for(int c = 0;c < currentYSize;c++) {
+            for(int c = 0; c < currentYSize;c++) {
                 cellsGrid[i, c] = Random.Range(0,1);
             }
         }
@@ -79,4 +80,7 @@ public class GameOfLifeOneDimension : MonoBehaviour
             yield return new WaitForSeconds(0.4f);
         }
     }
+
+    //reference to inputsField
+    //https://youtu.be/guelZvubWFY
 }
