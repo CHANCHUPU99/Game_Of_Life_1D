@@ -5,14 +5,14 @@ using UnityEngine.Rendering;
 
 public class OneDCell 
 {
-    public bool isAlive;
+    public bool bIsAlive;
 
     public OneDCell() {
-        isAlive = true;
+        bIsAlive = true;
     }
 
     public OneDCell(bool isAlive) {
-        this.isAlive = isAlive;
+        this.bIsAlive = isAlive;
     }
 
 }
