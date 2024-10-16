@@ -3,20 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Tilemaps;
 
 public class GameOfLifeOneDimension : MonoBehaviour
 {
-    public Button startGameOfLife;
-    public TMP_InputField xRowInput, yColumnsInput, ruleNumber;
+    public OneDCell[,] theGrid;
+    public Tilemap tilemap;
+    public Tilemap userTilemap;
+    public Tile drawedTile;
+    public int rows = 31;
+    public int columns = 16;
+    private bool simulationIsRunning;
+    public Tile deadTile;
+    /// //////////
+    public Button startGameOfLife, b_steppedMode,b_runAllMode, b_stopMode;
+    public TMP_InputField xRowInput, yColumnsInput, ruleNumber, generationsNumber;
     public bool bRandomActivaded, bSteppedModeActivated;
     public Toggle randomMode, steppedMode;
     private int[,] cellsGrid;
     private int ruleToBinari;
     private int currentXSize, currentYSize;
 
+    //Variables para los patrones (las partes de arriba que no cambian nunca)
+
 
     void Start()
     {
+        theGrid = new OneDCell[rows, columns];
+        for (int i = 0; i < rows; i++) {
+            for (int c = 0; c < columns; c++) {
+                theGrid[i, c] = new OneDCell(false);
+            }
+        }
         startGameOfLife.onClick.AddListener(runGameOfLife);
     }
 
@@ -24,6 +42,12 @@ public class GameOfLifeOneDimension : MonoBehaviour
     void Update()
     {
         
+    }
+
+    //aqui tengo que empezar la logica para los patrones(los que nunca cambian )
+    void petterns() {
+        //me gustaria meter un foreach donde tome los tres cell actuales y cheque los vecinos
+        //y entonces cada caso  debe tener su propio 0 o 1 lo que hara 
     }
     //aqui solo creo toda la grid por lo que todas deben estar muertas
     void createGrid() {

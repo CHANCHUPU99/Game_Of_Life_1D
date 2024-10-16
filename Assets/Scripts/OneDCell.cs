@@ -11,4 +11,8 @@ public class OneDCell
         isAlive = true;
     }
 
+    public OneDCell(bool isAlive) {
+        this.isAlive = isAlive;
+    }
+
 }
