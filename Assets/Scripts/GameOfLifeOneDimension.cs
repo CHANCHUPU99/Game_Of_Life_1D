@@ -49,7 +49,7 @@ void Start()
     }
 
     //aqui tengo que empezar la logica para los patrones(los que nunca cambian )
-    int petterns(List<int> neighsList) {
+    int patterns(List<int> neighsList) {
         //me gustaria meter un foreach donde tome los tres cell actuales y cheque los vecinos
         //y entonces cada caso  debe tener su propio 0 o 1 lo que hara (descartado por el momento)
         //////////////////////////////////////////////////////////////////
@@ -122,6 +122,7 @@ void Start()
         }
         for(int i = 0; i < columns; i++) {
             List<int> getNeighsList = checkNeighsOneD(i);
+            int tempIndexPatter = patterns(getNeighsList);
             //aqui tendria que 
 
         }
