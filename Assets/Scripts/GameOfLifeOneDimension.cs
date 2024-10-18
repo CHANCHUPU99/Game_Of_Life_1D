@@ -22,8 +22,11 @@ public class GameOfLifeOneDimension : MonoBehaviour
     public bool bRandomActivaded, bSteppedModeActivated;
     public Toggle randomMode, steppedMode;
     private int[,] cellsGrid;
+    private int rule;
     private int ruleToBinari;
     private int currentXSize, currentYSize;
+
+    private int numGenerations;
 
     //Variables para los patrones (las partes de arriba que no cambian nunca)
     //lista de patrones (pero tengo que ver si hay alguna manera mas optima)
@@ -40,26 +43,30 @@ public class GameOfLifeOneDimension : MonoBehaviour
 
 void Start()
     {
-        xRowInput.onEndEdit.AddListener(delegate { });
-        /*theGrid = new OneDCell[rows, columns];
-        for (int i = 0; i < rows; i++) {
+        xRowInput.onEndEdit.AddListener(selectRows);
+        yColumnsInput.onEndEdit.AddListener(selectColumns);
+        ruleNumber.onEndEdit.AddListener(selectRule);
+        startGameOfLife.onClick.AddListener(runGameOfLife);
+        theGrid = new OneDCell[columns];
+        //for (int i = 0; i < rows; i++) {
             for (int c = 0; c < columns; c++) {
-                theGrid[i, c] = new OneDCell(false);
+                theGrid[c] = new OneDCell(false);
             }
-        }
-        startGameOfLife.onClick.AddListener(runGameOfLife);*/
+        //}
     }
     
     public void selectRows(string rowsTxt) {
-        Debug.Log("cambioooooo");
+        rows = int.Parse(rowsTxt);
+        Debug.Log(rows);
     }
 
     public void selectColumns(string columnsTxt) {
-        Debug.Log("cambioooooo");
+        columns = int.Parse(columnsTxt);
+        Debug.Log(columns);
     }
 
     public void selectRule(string ruleTxt) {
-
+        rule = int.Parse(ruleTxt);
     }
     //aqui tengo que empezar la logica para los patrones(los que nunca cambian )
     int patterns(List<int> neighsList) {
@@ -87,7 +94,7 @@ void Start()
     //function para checar vecinos de tres en tres(left, current, right)
     List<int> checkNeighsOneD(int currentCellPos) {
         List<int> neighsList = new List<int>();
-        if (theGrid[currentCellPos - 1].bIsAlive) {
+        if (currentCellPos > 0 && theGrid[currentCellPos - 1].bIsAlive) {
             //vivo a la izq
             neighsList.Add(1);
         } else {
@@ -103,7 +110,7 @@ void Start()
         }
 
         //riiight
-        if (theGrid[currentCellPos++].bIsAlive) {
+        if (currentCellPos < theGrid.Length - 1 &&theGrid[currentCellPos++].bIsAlive) {
             neighsList.Add(1);
         } else {
             neighsList.Add(0);
@@ -111,7 +118,7 @@ void Start()
         return neighsList;
     }
 
-    void runGameOfLife() {
+    public void runGameOfLife() {
         /*currentXSize = int.Parse(xRowInput.text);
         currentYSize = int.Parse(yColumnsInput.text);
         bRandomActivaded = randomMode.isOn;
@@ -128,6 +135,8 @@ void Start()
         if(bSteppedModeActivated) {
             StartCoroutine(steppedModeDelay());
         }*/
+
+        int currentIteration = 0;
         ruleNumberToBinary();
         OneDCell[] tempGrid = new OneDCell[columns];
         for(int i = 0;i < columns; i++) {
@@ -142,8 +151,39 @@ void Start()
             }
         }
         theGrid = tempGrid;
-        //updateVisualGrid();
+        updateVisualGrid(currentIteration);
 
+       
+
+    }
+    private void updateGrid(Vector3Int tilePos) {
+        int currentPos = tilePos.x;
+        TileBase currentTilemap = tilemap.GetTile(tilePos);
+        if (currentTilemap == null) {
+            tilemap.SetTile(tilePos, drawedTile);
+            userTilemap.SetTile(tilePos, drawedTile);
+            theGrid[tilePos.x].bIsAlive = true;
+            Debug.Log("viveeeeeee");
+        } else {
+            tilemap.SetTile(tilePos, null);
+            userTilemap.SetTile(tilePos, null);
+            theGrid[tilePos.x].bIsAlive = false;
+            Debug.Log("MUEREEEEEE");
+        }
+    }
+
+    private void updateVisualGrid(int iterationNumber) {
+        //for (int i = 0; i < rows; i++) {
+            for (int c = 0; c < columns; c++) {
+                Vector3Int currentGridPos = new Vector3Int(c,iterationNumber,0);
+                if (theGrid[c].bIsAlive) {
+                    Debug.Log("deberia ser 1");
+                    tilemap.SetTile(currentGridPos, drawedTile);
+                } else {
+                    tilemap.SetTile(currentGridPos, null);
+                }
+            }
+        //}
     }
 
     //aqui solo creo toda la grid por lo que todas deben estar muertas
