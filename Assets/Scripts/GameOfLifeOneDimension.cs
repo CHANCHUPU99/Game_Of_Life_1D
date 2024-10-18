@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Tilemaps;
+using System;
 
 public class GameOfLifeOneDimension : MonoBehaviour
 {
@@ -26,19 +27,20 @@ public class GameOfLifeOneDimension : MonoBehaviour
 
     //Variables para los patrones (las partes de arriba que no cambian nunca)
     //lista de patrones (pero tengo que ver si hay alguna manera mas optima)
-    List<List<int>> patternsList = new List<List<int>>() {
-        new List<int>() {1,1,1 },
-        new List<int>() { 1, 1, 0 },
-        new List<int>() { 1, 0, 1 },
-        new List<int>() { 1, 0, 0 },
-        new List<int>() { 0, 1, 1 },
-        new List<int>() { 0, 1, 0 },
-        new List<int>() { 0, 0, 1 },
-        new List<int>() { 0, 0, 0 },
+    List<(List<char>, bool)> patternsList = new List<(List<char>, bool)>() {
+        (new List<char>() {'1','1','1' },false),
+        (new List < char >() { '1', '1', '0' }, false),
+        (new List < char >() { '1', '0', '1' }, false),
+        (new List < char >() { '1', '0', '0' }, false),
+        (new List < char >() { '0', '1', '1' }, false),
+        (new List < char >() { '0', '1', '0' }, false),
+        (new List < char >() { '0', '0', '1' }, false),
+        (new List < char >() { '0', '0', '0' }, false),
     };
 
 void Start()
     {
+        xRowInput.onEndEdit.AddListener(delegate { });
         /*theGrid = new OneDCell[rows, columns];
         for (int i = 0; i < rows; i++) {
             for (int c = 0; c < columns; c++) {
@@ -47,7 +49,18 @@ void Start()
         }
         startGameOfLife.onClick.AddListener(runGameOfLife);*/
     }
+    
+    public void selectRows(string rowsTxt) {
+        Debug.Log("cambioooooo");
+    }
 
+    public void selectColumns(string columnsTxt) {
+        Debug.Log("cambioooooo");
+    }
+
+    public void selectRule(string ruleTxt) {
+
+    }
     //aqui tengo que empezar la logica para los patrones(los que nunca cambian )
     int patterns(List<int> neighsList) {
         //me gustaria meter un foreach donde tome los tres cell actuales y cheque los vecinos
@@ -57,14 +70,16 @@ void Start()
        for(int i = 0;i < patternsList.Count;i++) {
             matchFound = true;
             for(int n=0; n< neighsList.Count;n++) {
-                if (patternsList[i][n] != neighsList[n]){
+                if (patternsList[i].Item1[n] != neighsList[n].ToString()[0]){
                     matchFound = false;
                     return 0;
                 }
 
             }
             //aaqui deberiaa devolver mi indice del patron con el cual hubo match
-            return i;
+            if (matchFound) {
+                return i;
+            }
         }
         return 0;
     }
@@ -96,8 +111,6 @@ void Start()
         return neighsList;
     }
 
-
-
     void runGameOfLife() {
         /*currentXSize = int.Parse(xRowInput.text);
         currentYSize = int.Parse(yColumnsInput.text);
@@ -115,7 +128,7 @@ void Start()
         if(bSteppedModeActivated) {
             StartCoroutine(steppedModeDelay());
         }*/
-
+        ruleNumberToBinary();
         OneDCell[] tempGrid = new OneDCell[columns];
         for(int i = 0;i < columns; i++) {
             tempGrid[i] = new OneDCell();
@@ -124,7 +137,9 @@ void Start()
             List<int> getNeighsList = checkNeighsOneD(i);
             int tempIndexPatter = patterns(getNeighsList);
             //aqui tendria que 
-
+            if(tempIndexPatter != -1) {
+                tempGrid[i].bIsAlive = patternsList[tempIndexPatter].Item2;
+            }
         }
         theGrid = tempGrid;
         //updateVisualGrid();
@@ -140,8 +155,15 @@ void Start()
             }
         }
     }
-    public void gameOfLifeRules() {
+    public void ruleNumberToBinary() {
         //preguntar como hacer esto de lo binario
+        int numberToConvert = int.Parse(ruleNumber.text);
+        string binaryString = Convert.ToString(numberToConvert,2).PadLeft(8,'0');
+        char[] binaryChars = binaryString.ToCharArray();
+
+        for(int i = 0;i < binaryChars.Length ; i++) {
+            patternsList[i] = (patternsList[i].Item1, binaryChars[i] =='1');
+        }
     }
 
     //funcion para crear todo de una 
@@ -154,7 +176,7 @@ void Start()
     void randomGrid() {
         for(int i = 0;i < currentXSize;i++) {
             for(int c = 0; c < currentYSize;c++) {
-                cellsGrid[i, c] = Random.Range(0,1);
+               // cellsGrid[i, c] = Random.Range(0,1);
             }
         }
     }
@@ -165,7 +187,6 @@ void Start()
             yield return new WaitForSeconds(0.4f);
         }
     }
-
     //reference to inputsField
     //https://youtu.be/guelZvubWFY
 }
