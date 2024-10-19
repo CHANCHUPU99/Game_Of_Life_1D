@@ -1658,20 +1658,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 122f80a2321e8e242a6501c0da4f429f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
-  userTilemap: {fileID: 0}
-  drawedTile: {fileID: 0}
+  tilemap: {fileID: 2076807476}
+  userTilemap: {fileID: 1587313291}
+  drawedTile: {fileID: 11400000, guid: b4ca4c873d7e5da40a7c9ab7cd81fc73, type: 2}
   rows: 31
   columns: 16
-  deadTile: {fileID: 0}
+  deadTile: {fileID: 11400000, guid: b837656afd6abce4b92e4eea49702544, type: 2}
   startGameOfLife: {fileID: 1746960182}
-  b_steppedMode: {fileID: 0}
-  b_runAllMode: {fileID: 0}
-  b_stopMode: {fileID: 0}
+  b_steppedMode: {fileID: 965293149}
+  b_runAllMode: {fileID: 542292199}
+  b_stopMode: {fileID: 201093011}
   xRowInput: {fileID: 401762660}
   yColumnsInput: {fileID: 136945473}
   ruleNumber: {fileID: 1424143360}
-  generationsNumber: {fileID: 0}
+  generationsNumber: {fileID: 1093443519}
   bRandomActivaded: 0
   bSteppedModeActivated: 0
   randomMode: {fileID: 0}
@@ -3724,7 +3724,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.5774723, b: 0, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.46176267, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}

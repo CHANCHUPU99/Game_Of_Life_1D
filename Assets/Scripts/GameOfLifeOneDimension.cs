@@ -46,15 +46,20 @@ void Start()
         xRowInput.onEndEdit.AddListener(selectRows);
         yColumnsInput.onEndEdit.AddListener(selectColumns);
         ruleNumber.onEndEdit.AddListener(selectRule);
+        generationsNumber.onEndEdit.AddListener(selectGenerations);
         startGameOfLife.onClick.AddListener(runGameOfLife);
         theGrid = new OneDCell[columns];
         //for (int i = 0; i < rows; i++) {
             for (int c = 0; c < columns; c++) {
                 theGrid[c] = new OneDCell(false);
             }
+            initializeFirstRow();
         //}
     }
-    
+
+    private void Update() {
+        
+    }
     public void selectRows(string rowsTxt) {
         rows = int.Parse(rowsTxt);
         Debug.Log(rows);
@@ -67,6 +72,12 @@ void Start()
 
     public void selectRule(string ruleTxt) {
         rule = int.Parse(ruleTxt);
+        ruleNumberToBinary();
+    }
+
+    public void selectGenerations(string generationNumTxt) {
+        numGenerations = int.Parse(generationNumTxt);
+        Debug.Log(columns);
     }
     //aqui tengo que empezar la logica para los patrones(los que nunca cambian )
     int patterns(List<int> neighsList) {
@@ -88,72 +99,74 @@ void Start()
                 return i;
             }
         }
-        return 0;
+        return -1;
+    }
+
+    void initializeFirstRow() {
+        int midGridColum = columns / 2;
+        theGrid[midGridColum].bIsAlive = true;
+        Vector3Int tilePos = new Vector3Int(midGridColum, 0, 0);
+        tilemap.SetTile(tilePos, drawedTile);
     }
 
     //function para checar vecinos de tres en tres(left, current, right)
     List<int> checkNeighsOneD(int currentCellPos) {
         List<int> neighsList = new List<int>();
-        if (currentCellPos > 0 && theGrid[currentCellPos - 1].bIsAlive) {
-            //vivo a la izq
-            neighsList.Add(1);
-        } else {
-            //no hay vivo a la izq
-            neighsList.Add(0);
+        if (currentCellPos < 0 || currentCellPos >= theGrid.Length) {
+            Debug.LogError("currentCellPos fuera del grid: " + currentCellPos);
+            return neighsList; 
         }
-
-        //curreeeeeeeeeeent
+        if (currentCellPos == 0) {
+            if (theGrid[theGrid.Length - 1].bIsAlive) {
+                neighsList.Add(1);
+            } else {
+                neighsList.Add(0);
+            }
+        } else {
+            if (theGrid[currentCellPos - 1].bIsAlive) {
+                neighsList.Add(1);
+            } else {
+                neighsList.Add(0);
+            }
+        }
         if (theGrid[currentCellPos].bIsAlive) {
             neighsList.Add(1);
         } else {
             neighsList.Add(0);
         }
-
-        //riiight
-        if (currentCellPos < theGrid.Length - 1 &&theGrid[currentCellPos++].bIsAlive) {
-            neighsList.Add(1);
+        if (currentCellPos == theGrid.Length - 1) {
+            if (theGrid[0].bIsAlive) {
+                neighsList.Add(1);
+            } else {
+                neighsList.Add(0);
+            }
         } else {
-            neighsList.Add(0);
+            if (theGrid[currentCellPos + 1].bIsAlive) {
+                neighsList.Add(1);
+            } else {
+                neighsList.Add(0);
+            }
         }
         return neighsList;
     }
 
     public void runGameOfLife() {
-        /*currentXSize = int.Parse(xRowInput.text);
-        currentYSize = int.Parse(yColumnsInput.text);
-        bRandomActivaded = randomMode.isOn;
-        bSteppedModeActivated = steppedMode.isOn;
-        cellsGrid = new int[currentXSize, currentYSize];
-        if(bRandomActivaded) {
-            randomGrid();
-            //aqui tendria que poner mi funcion de randomizar 
-            
-        } else {
-            createGrid();
-        }
-        // tengo que hacer lo contrario , por si se activa steppedMode, para la corrutina
-        if(bSteppedModeActivated) {
-            StartCoroutine(steppedModeDelay());
-        }*/
-
         int currentIteration = 0;
-        ruleNumberToBinary();
-        OneDCell[] tempGrid = new OneDCell[columns];
-        for(int i = 0;i < columns; i++) {
-            tempGrid[i] = new OneDCell();
-        }
-        for(int i = 0; i < columns; i++) {
-            List<int> getNeighsList = checkNeighsOneD(i);
-            int tempIndexPatter = patterns(getNeighsList);
-            //aqui tendria que 
-            if(tempIndexPatter != -1) {
-                tempGrid[i].bIsAlive = patternsList[tempIndexPatter].Item2;
+        while (currentIteration < numGenerations) {
+            OneDCell[] tempGrid = new OneDCell[columns];
+            for(int i = 0;i < columns; i++) {
+                tempGrid[i] = new OneDCell();
+                List<int> getNeighsList = checkNeighsOneD(i);
+                int tempIndexPatter = patterns(getNeighsList);
+                if(tempIndexPatter != -1) {
+                    tempGrid[i].bIsAlive = patternsList[tempIndexPatter].Item2;
+                }
             }
+            theGrid = tempGrid;
+            updateVisualGrid(currentIteration);
+            currentIteration++;
         }
-        theGrid = tempGrid;
-        updateVisualGrid(currentIteration);
 
-       
 
     }
     private void updateGrid(Vector3Int tilePos) {
@@ -213,13 +226,15 @@ void Start()
         }
     }
     //funcion para randomizar el grid(falta preguntar)
-    void randomGrid() {
-        for(int i = 0;i < currentXSize;i++) {
-            for(int c = 0; c < currentYSize;c++) {
-               // cellsGrid[i, c] = Random.Range(0,1);
+    /*void randomGrid() {
+        for(int i = 0;i < columns; i++) {
+            bool bIsAlive = Random.Range(0, 2) == 1;
+            theGrid[i].bIsAlive = bIsAlive;
+            if (bIsAlive) {
+                tilemap.SetTile(new Vector3Int(i, 0, 0), drawedTile);
             }
         }
-    }
+    }*/
 
     //funcion para la corrutina del steppedMode
     IEnumerator steppedModeDelay() {
