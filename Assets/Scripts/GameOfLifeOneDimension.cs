@@ -47,14 +47,15 @@ void Start()
         yColumnsInput.onEndEdit.AddListener(selectColumns);
         ruleNumber.onEndEdit.AddListener(selectRule);
         generationsNumber.onEndEdit.AddListener(selectGenerations);
-        startGameOfLife.onClick.AddListener(runGameOfLife);
-        theGrid = new OneDCell[columns];
-        //for (int i = 0; i < rows; i++) {
-            for (int c = 0; c < columns; c++) {
-                theGrid[c] = new OneDCell(false);
-            }
-            initializeFirstRow();
-        //}
+        //startGameOfLife.onClick.AddListener(runGameOfLife);
+        //theGrid = new OneDCell[columns];
+        ////for (int i = 0; i < rows; i++) {
+        //    for (int c = 0; c < columns; c++) {
+        //        theGrid[c] = new OneDCell(false);
+        //        Debug.LogError("theGrid no esta bien");
+        //    }
+        //    initializeFirstRow();
+        ////}
     }
 
     private void Update() {
@@ -67,6 +68,9 @@ void Start()
 
     public void selectColumns(string columnsTxt) {
         columns = int.Parse(columnsTxt);
+        theGrid = new OneDCell[columns];
+        Debug.Log("columssssssss:  " + columns);
+        createGrid();
         Debug.Log(columns);
     }
 
@@ -84,9 +88,9 @@ void Start()
         //me gustaria meter un foreach donde tome los tres cell actuales y cheque los vecinos
         //y entonces cada caso  debe tener su propio 0 o 1 lo que hara (descartado por el momento)
         //////////////////////////////////////////////////////////////////
-        bool matchFound;
+        //bool matchFound;
        for(int i = 0;i < patternsList.Count;i++) {
-            matchFound = true;
+            bool matchFound = true;
             for(int n=0; n< neighsList.Count;n++) {
                 if (patternsList[i].Item1[n] != neighsList[n].ToString()[0]){
                     matchFound = false;
@@ -103,10 +107,15 @@ void Start()
     }
 
     void initializeFirstRow() {
+        if (theGrid == null || theGrid.Length == 0) {
+            Debug.LogError("theGrid no esta bieeeeeeeeeen");
+            return;
+        }
         int midGridColum = columns / 2;
         theGrid[midGridColum].bIsAlive = true;
         Vector3Int tilePos = new Vector3Int(midGridColum, 0, 0);
         tilemap.SetTile(tilePos, drawedTile);
+        Debug.Log("tile possssss: " + tilePos);
     }
 
     //function para checar vecinos de tres en tres(left, current, right)
@@ -114,7 +123,7 @@ void Start()
         List<int> neighsList = new List<int>();
         if (currentCellPos < 0 || currentCellPos >= theGrid.Length) {
             Debug.LogError("currentCellPos fuera del grid: " + currentCellPos);
-            return neighsList; 
+            return new List<int>(); 
         }
         if (currentCellPos == 0) {
             if (theGrid[theGrid.Length - 1].bIsAlive) {
@@ -152,6 +161,7 @@ void Start()
 
     public void runGameOfLife() {
         int currentIteration = 0;
+        Debug.LogWarning("iniciaaaaaaaaa");
         while (currentIteration < numGenerations) {
             OneDCell[] tempGrid = new OneDCell[columns];
             for(int i = 0;i < columns; i++) {
@@ -160,15 +170,34 @@ void Start()
                 int tempIndexPatter = patterns(getNeighsList);
                 if(tempIndexPatter != -1) {
                     tempGrid[i].bIsAlive = patternsList[tempIndexPatter].Item2;
+                } else {
+                    tempGrid[i].bIsAlive = theGrid[i].bIsAlive;
                 }
             }
             theGrid = tempGrid;
             updateVisualGrid(currentIteration);
+            Debug.Log("itttt " + currentIteration);
             currentIteration++;
+     
         }
 
 
     }
+        IEnumerator generationsInterval() {
+            while (simulationIsRunning) {
+                yield return new WaitForSeconds(2f);
+                runGameOfLife();
+                //updateVisualGrid();
+            }
+        }
+
+    public void startGameOfLifeOneD() {
+        simulationIsRunning = true;
+        StartCoroutine(generationsInterval());
+
+    }
+
+
     private void updateGrid(Vector3Int tilePos) {
         int currentPos = tilePos.x;
         TileBase currentTilemap = tilemap.GetTile(tilePos);
@@ -187,12 +216,15 @@ void Start()
 
     private void updateVisualGrid(int iterationNumber) {
         //for (int i = 0; i < rows; i++) {
-            for (int c = 0; c < columns; c++) {
+            for (int c = 0; c < theGrid.Length; c++) {
                 Vector3Int currentGridPos = new Vector3Int(c,iterationNumber,0);
                 if (theGrid[c].bIsAlive) {
-                    Debug.Log("deberia ser 1");
+                    Debug.Log($"Generación {iterationNumber}: Celda {c} viva, dibujando en {currentGridPos}");
+                    //Debug.Log("tile vivoooooooo");
                     tilemap.SetTile(currentGridPos, drawedTile);
                 } else {
+                    Debug.Log($"Generación {iterationNumber}: Celda {c} muertaaaaaaa, dibujando en {currentGridPos}");
+                    //Debug.Log("tile muertooooooooo");
                     tilemap.SetTile(currentGridPos, null);
                 }
             }
@@ -201,12 +233,15 @@ void Start()
 
     //aqui solo creo toda la grid por lo que todas deben estar muertas
     void createGrid() {
-        for(int i = 0;i < currentXSize; i++) {
-            for(int c = 0;c < currentYSize; c++) {
-                cellsGrid[i, c] = 0;   
-
-            }
+        //for(int i = 0;i < currentXSize; i++) {
+        theGrid = new OneDCell[columns];
+            for(int c = 0;c < columns; c++) {
+            theGrid[c] = new OneDCell(false);
+            Debug.Log($"Creando celda en columna {c}, viva: {theGrid[c].bIsAlive}");
+            //updateVisualGrid(c);
         }
+            initializeFirstRow();
+        //}
     }
     public void ruleNumberToBinary() {
         //preguntar como hacer esto de lo binario

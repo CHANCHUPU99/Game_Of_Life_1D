@@ -1100,7 +1100,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.20764446, g: 0, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1124,8 +1124,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 50
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1150,7 +1150,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 55.7, y: 31, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1660,10 +1660,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 2076807476}
   userTilemap: {fileID: 1587313291}
-  drawedTile: {fileID: 11400000, guid: b4ca4c873d7e5da40a7c9ab7cd81fc73, type: 2}
+  drawedTile: {fileID: 11400000, guid: 172e87788db728048b86f8180a044e86, type: 2}
   rows: 31
   columns: 16
-  deadTile: {fileID: 11400000, guid: b837656afd6abce4b92e4eea49702544, type: 2}
+  deadTile: {fileID: 11400000, guid: 57ee021133afb8f45b9bc1a92e5e8dc9, type: 2}
   startGameOfLife: {fileID: 1746960182}
   b_steppedMode: {fileID: 965293149}
   b_runAllMode: {fileID: 542292199}
@@ -3372,7 +3372,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
+  m_SortOrder: 2
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
@@ -3748,7 +3748,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 776322138}
         m_TargetAssemblyTypeName: GameOfLifeOneDimension, Assembly-CSharp
-        m_MethodName: runGameOfLife
+        m_MethodName: startGameOfLifeOneD
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4318,7 +4318,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
+  m_SortOrder: 2
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
