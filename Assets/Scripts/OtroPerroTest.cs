@@ -15,10 +15,11 @@ public class OtroPerroTest : MonoBehaviour
     public TMP_InputField rowsInput, columnsInput, ruleInput;
     public int rows;
     public int columns;
-    public int rule; 
+    public int rule;
+    public int currntRow;
     private int[,] thegrid;
     private int[,] newGrid;
-
+    public bool bIssteppedACtivated;
     void Start() {
         rowsInput.onEndEdit.AddListener(setRows);
         columnsInput.onEndEdit.AddListener(setColumns);
@@ -38,7 +39,7 @@ public class OtroPerroTest : MonoBehaviour
         for(int i = 0; i < rows; i++) {
             applyRule();
             updateVisualGrid();
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(.5f);
 
         }
             //updateVisualGrid();
@@ -46,21 +47,26 @@ public class OtroPerroTest : MonoBehaviour
     //buttons functionssss
     public void startGameOfLifeOneD() {
         //simulationIsRunning = true;
+        //initializeGrid();
+        initializeGrid();
         StartCoroutine(generationsInterval());
 
     }
 
     IEnumerator generationsIntervalForNormalMode() {
         //gameOflifePast();
-        for (int i = 0; i < rows; i++) {
+        bIssteppedACtivated = true;
+        for(currntRow = 1; currntRow < rows;currntRow++) {
             applyRule();
             updateVisualGrid();
             yield return new WaitForSeconds(1f);
 
         }
+        bIssteppedACtivated= false;
         //updateVisualGrid();
     }
     public void starGameOfLifeSteppedMode() {
+        initializeGrid();
         StartCoroutine(generationsIntervalForNormalMode());
         /*for (int i = 0; i < rows; i++) {
             applyRule();
@@ -85,49 +91,56 @@ public class OtroPerroTest : MonoBehaviour
     void initializeGrid() {
         thegrid = new int[rows, columns];
         newGrid = new int[rows, columns];
-        for (int i = 0; i < rows; i++) {
-            for (int c = 0;c < columns; c++) {
+        for(int i = 0; i < rows; i++) {
+            for(int c = 0;c < columns; c++) {
                 thegrid[i, c] = 0; 
             }
         }
-        thegrid[0, columns / 2] = 1; 
+        thegrid[0, columns / 2] = 1;
+        updateVisualGrid();
     }
 
     void applyRule() {
+        //preguntar del congert igual del Array.
         string ruleToBinaryyy = Convert.ToString(rule, 2).PadLeft(8, '0');
         for(int i = 1;i < rows; i++) {
-            for(int c = 0; c < columns; c++) {
+            for(int c = 0;c < columns; c++) {
                 int leftNeigh, current, rightNeigh;
-                if (c > 0) {
+                if(c > 0) {
                     leftNeigh = thegrid[i - 1, c - 1];
-                } else {                   
+                } else {
                     leftNeigh = 0;
                 }
                 current = thegrid[i - 1, c];
-                if (c < columns - 1) {
+                if(c < columns - 1) {
                     rightNeigh = thegrid[i - 1, c + 1];
                 } else {
                     rightNeigh = 0;
                 }
                 int patteeeern = (leftNeigh * 4) + (current * 2) + rightNeigh;
-                if (ruleToBinaryyy[7-patteeeern] == '1') {
-                    newGrid[i, c] = 1; 
-                }else {
-                    newGrid[i, c] = 0; 
+                if(ruleToBinaryyy[7 - patteeeern] == '1') {
+                    newGrid[i, c] = 1;
+                } else {
+                    newGrid[i, c] = 0;
                 }
             }
-        }
-       /* for(int i = 0;i < rows; i++) {
             for(int c = 0;c < columns; c++) {
                 thegrid[i, c] = newGrid[i, c];
             }
-        }*/
+            //preguntar diferenciaaaaaaaaaaaaaaaaaaa
+            //Array.Copy(newGrid,thegrid, newGrid.Length);
+            /*for(int i = 0;i < rows; i++) {
+                for(int c = 0;c < columns; c++) {
+                    thegrid[i, c] = newGrid[i, c];
+                }
+            }*/
+        }
     }
 
     void updateVisualGrid() {
-        //tilemap.ClearAllTiles();
-        for(int i = 0;i < rows; i++) {
-            for(int c = 0; c < columns; c++) {
+        tilemap.ClearAllTiles();
+        for(int i = 0; i < rows; i++) {
+            for(int c = 0;c < columns; c++) {
                 Vector3Int position = new Vector3Int(c, -i, 0);
                 // if (newGrid[i,c] == 1 && tilemap.GetTile(position) != aliveTile) {
                 //   tilemap.SetTile(position, aliveTile);
@@ -135,22 +148,29 @@ public class OtroPerroTest : MonoBehaviour
                 //else {
                 //  tilemap.SetTile(position, deadTile);
                 //}
-                if(newGrid[i, c] == 1) {
+                /*if (newGrid[i, c] == 1 && tilemap.GetTile(position) != aliveTile) {
                     tilemap.SetTile(position, aliveTile); 
-                } else if(i > 0 && newGrid[i, c] == 0 && thegrid[i, c] == 0) {
+                }else if(newGrid[i, c] == 0 && tilemap.GetTile(position) != deadTile) {
+                    tilemap.SetTile(position, deadTile);
+                }*/
+                if (thegrid[i, c] == 1) {
+                    tilemap.SetTile(position, aliveTile);
+                } else {
                     tilemap.SetTile(position, deadTile);
                 }
             }
-        }
-        //Array.Copy(newGrid, thegrid,newGrid.Length);
-        for(int i = 0; i < rows; i++) {
-            for(int c = 0; c < columns; c++) {
-                thegrid[i, c] = newGrid[i, c];
+            if(bIssteppedACtivated && i>= currntRow) {
+                Debug.LogWarning("se activooo steppedddd");
+                break;
             }
+            //Array.Copy(newGrid, thegrid,newGrid.Length);
+            /* for(int i = 0; i < rows; i++) {
+                 for(int c = 0; c < columns; c++) {
+                     thegrid[i, c] = newGrid[i, c];
+                 }
+             }*/
         }
     }
-
-
 }
 
 //reference to inputsField

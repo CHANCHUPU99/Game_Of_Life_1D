@@ -703,7 +703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &220626446
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1859,7 +1859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 775.90906, y: -290.54553}
+  m_AnchoredPosition: {x: 775.90906, y: -120}
   m_SizeDelta: {x: -1597.364, y: -983.545}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &965293149
@@ -1908,7 +1908,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1218521307}
         m_TargetAssemblyTypeName: OtroPerroTest, Assembly-CSharp
-        m_MethodName: startGameOfLifeOneD
+        m_MethodName: starGameOfLifeSteppedMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2230,7 +2230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1093443518
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2562,6 +2562,8 @@ MonoBehaviour:
   rows: 31
   columns: 16
   rule: 30
+  currntRow: 0
+  bIssteppedACtivated: 0
 --- !u!4 &1218521308
 Transform:
   m_ObjectHideFlags: 0
@@ -3730,7 +3732,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 777.0908, y: -187.40906}
+  m_AnchoredPosition: {x: 777.0908, y: -16.86351}
   m_SizeDelta: {x: -1596.364, y: -984.545}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1746960182
@@ -3779,7 +3781,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1218521307}
         m_TargetAssemblyTypeName: OtroPerroTest, Assembly-CSharp
-        m_MethodName: starGameOfLifeSteppedMode
+        m_MethodName: startGameOfLifeOneD
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
