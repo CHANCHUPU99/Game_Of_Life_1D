@@ -1676,6 +1676,7 @@ MonoBehaviour:
   bSteppedModeActivated: 0
   randomMode: {fileID: 0}
   steppedMode: {fileID: 0}
+  numGenerations: 10
 --- !u!4 &776322139
 Transform:
   m_ObjectHideFlags: 0
