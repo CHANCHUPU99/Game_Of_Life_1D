@@ -51,7 +51,6 @@ void Start()
         ruleNumber.onEndEdit.AddListener(selectRule);
         generationsNumber.onEndEdit.AddListener(selectGenerations);      
     }
-
     private void Update() {
         
     }
@@ -88,7 +87,6 @@ void Start()
         for (int i = 0;i < patternsList.Count;i++) {
             bool matchFound = true;
             for(int n=0; n< neighsList.Count;n++) {
-                //Debug.Log($"Revisando patrón {i}, índice {n} de patronesList[i].Item1, tamaño de patronesList[i].Item1: {patternsList[i].Item1.Count}, tamaño de neighsList: {neighsList.Count}");
                 if (patternsList[i].Item1[n] != neighsList[n].ToString()[0]){
                     matchFound = false;
                     break;
@@ -96,8 +94,7 @@ void Start()
 
             }
             //aaqui deberiaa devolver mi indice del patron con el cual hubo match
-            if (matchFound) {
-                Debug.Log("Patrón encontrado: " + string.Join("", patternsList[i].Item1));
+            if (matchFound) {            
                 return i;
             }
         }
@@ -144,40 +141,34 @@ void Start()
         int currentIteration = 0;
         Debug.LogWarning("iniciaaaaaaaaa: " + numGenerations);
         while (currentIteration < numGenerations) {
-            Debug.LogWarning($"Iteración {currentIteration} comenzando...");
             OneDCell[,] tempGrid = new OneDCell[rows, columns];
             for (int i = 0;i < rows; i++) {
                 for (int c = 0; c < columns; c++) {
                     tempGrid[i, c] = new OneDCell();
-                    //Debug.LogWarning($"Creando celda temporal en ({i},{c}): Viva - {tempGrid[i, c].bIsAlive}");
+
                 }
             }
             for (int i = 0; i < rows; i++) {
                 for (int c = 0; c < columns; c++) {
                     if (currentIteration == 0) {
                         tempGrid[i, c].bIsAlive = theGrid[i, c].bIsAlive;
-                        Debug.LogWarning($"Iteración {currentIteration}: Celda inicial ({i}, {c}) viva: {tempGrid[i, c].bIsAlive}");
                     } else {
                         List<int> getNeighsList = checkNeighsOneD(i, c);
                         int tempIndexPattern = patterns(getNeighsList);
                         if (tempIndexPattern != -1) {
                             tempGrid[i, c].bIsAlive = patternsList[tempIndexPattern].Item2;
-                            Debug.Log($"Iteracion {currentIteration}: Celda ({i}, {c}) patron encontrado, viva: {tempGrid[i, c].bIsAlive}");
                         } else {
                             //tempGrid[i, c].bIsAlive = false;
                             tempGrid[i, c].bIsAlive = theGrid[i, c].bIsAlive;
-                            Debug.Log($"Iteracion {currentIteration}: Celda ({i}, {c}) sin patron, mantiene estado: {tempGrid[i, c].bIsAlive}");
                         }
                     }
                 }
             }
                 theGrid = tempGrid;
                 updateVisualGrid(currentIteration);
-                Debug.LogWarning($"Iteración {currentIteration} completada");
                 currentIteration++;
         }
         Debug.LogWarning("Finalización del ciclo de generaciones");
-        //Debug.LogWarning($"Iteración {currentIteration} completada");
     }
         IEnumerator generationsInterval() {
             while (simulationIsRunning) {
@@ -199,12 +190,10 @@ void Start()
             for (int c = 0; c <columns; c++) {
                 Vector3Int currentGridPos = new Vector3Int(c,i,0);
                 if (theGrid[i,c].bIsAlive) {
-                    Debug.Log($"Generación {iterationNumber}: Celda {c} viva, dibujando en {currentGridPos}");
-                    //Debug.Log("tile vivoooooooo");
+                    Debug.Log("tile vivoooooooo");
                     tilemap.SetTile(currentGridPos, drawedTile);
                 } else {
-                    Debug.Log($"Generación {iterationNumber}: Celda {c} muertaaaaaaa, dibujando en {currentGridPos}");
-                    //Debug.Log("tile muertooooooooo");
+                    Debug.Log("tile muertooooooooo");
                     tilemap.SetTile(currentGridPos, deadTile);
                 }
             }
@@ -231,7 +220,6 @@ void Start()
         char[] binaryChars = binaryString.ToCharArray();
         for(int i = 0;i < binaryChars.Length ; i++) {
             patternsList[i] = (patternsList[i].Item1, binaryChars[i] =='1');
-            Debug.Log($"Patrón {patternsList[i].Item1} asignado a: {(binaryChars[i] == '1' ? "Vivo" : "Muerto")}");
         }
     }
 
