@@ -583,7 +583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &201093010
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1076,7 +1076,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.20764446, g: 0, b: 1, a: 0}
+  m_BackGroundColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1150,7 +1150,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &542292198
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1905,7 +1905,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 965293150}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1218521307}
+        m_TargetAssemblyTypeName: OtroPerroTest, Assembly-CSharp
+        m_MethodName: startGameOfLifeOneD
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &965293150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2789,7 +2801,7 @@ Transform:
   m_GameObject: {fileID: 1391581704}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 48.75, y: 46.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3415,7 +3427,7 @@ Tilemap:
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
-  m_TileOrientation: 0
+  m_TileOrientation: 2
   m_TileOrientationMatrix:
     e00: 1
     e01: 0
@@ -3767,7 +3779,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1218521307}
         m_TargetAssemblyTypeName: OtroPerroTest, Assembly-CSharp
-        m_MethodName: startGameOfLifeOneD
+        m_MethodName: starGameOfLifeSteppedMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4159,7 +4171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 772, y: 504}
+  m_AnchoredPosition: {x: 765.82855, y: 499.88574}
   m_SizeDelta: {x: -1542.74, y: -1030}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2058133579
@@ -4361,7 +4373,7 @@ Tilemap:
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
-  m_TileOrientation: 0
+  m_TileOrientation: 2
   m_TileOrientationMatrix:
     e00: 1
     e01: 0
@@ -4413,7 +4425,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 780, y: 336.9546}
+  m_AnchoredPosition: {x: 784.80005, y: 341.7546}
   m_SizeDelta: {x: -1552.329, y: -1030}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2120156790

@@ -185,6 +185,8 @@ void Start()
 
     }
 
+    
+
     private void updateVisualGrid(int iterationNumber) {
         for (int i = 0; i < rows; i++) {
             for (int c = 0; c <columns; c++) {

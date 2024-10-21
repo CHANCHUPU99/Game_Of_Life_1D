@@ -38,7 +38,7 @@ public class OtroPerroTest : MonoBehaviour
         for(int i = 0; i < rows; i++) {
             applyRule();
             updateVisualGrid();
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(2.5f);
 
         }
             //updateVisualGrid();
@@ -48,6 +48,24 @@ public class OtroPerroTest : MonoBehaviour
         //simulationIsRunning = true;
         StartCoroutine(generationsInterval());
 
+    }
+
+    IEnumerator generationsIntervalForNormalMode() {
+        //gameOflifePast();
+        for (int i = 0; i < rows; i++) {
+            applyRule();
+            updateVisualGrid();
+            yield return new WaitForSeconds(1f);
+
+        }
+        //updateVisualGrid();
+    }
+    public void starGameOfLifeSteppedMode() {
+        StartCoroutine(generationsIntervalForNormalMode());
+        /*for (int i = 0; i < rows; i++) {
+            applyRule();
+            updateVisualGrid();
+        }*/
     }
 
     void setRows(string rowsTxt) {
@@ -76,9 +94,9 @@ public class OtroPerroTest : MonoBehaviour
     }
 
     void applyRule() {
-        string binaryRule = Convert.ToString(rule, 2).PadLeft(8, '0');
+        string ruleToBinaryyy = Convert.ToString(rule, 2).PadLeft(8, '0');
         for(int i = 1;i < rows; i++) {
-            for (int c = 0; c < columns; c++) {
+            for(int c = 0; c < columns; c++) {
                 int leftNeigh, current, rightNeigh;
                 if (c > 0) {
                     leftNeigh = thegrid[i - 1, c - 1];
@@ -92,14 +110,18 @@ public class OtroPerroTest : MonoBehaviour
                     rightNeigh = 0;
                 }
                 int patteeeern = (leftNeigh * 4) + (current * 2) + rightNeigh;
-                if(binaryRule[7 - patteeeern] == '1') {
+                if (ruleToBinaryyy[7-patteeeern] == '1') {
                     newGrid[i, c] = 1; 
                 }else {
                     newGrid[i, c] = 0; 
                 }
             }
         }
-        //Array.Copy(newGrid, thegrid, newGrid.Length);
+       /* for(int i = 0;i < rows; i++) {
+            for(int c = 0;c < columns; c++) {
+                thegrid[i, c] = newGrid[i, c];
+            }
+        }*/
     }
 
     void updateVisualGrid() {
@@ -107,15 +129,28 @@ public class OtroPerroTest : MonoBehaviour
         for(int i = 0;i < rows; i++) {
             for(int c = 0; c < columns; c++) {
                 Vector3Int position = new Vector3Int(c, -i, 0);
-                if (newGrid[i,c] == 1) {
-                    tilemap.SetTile(position, aliveTile);
-                } else {
+                // if (newGrid[i,c] == 1 && tilemap.GetTile(position) != aliveTile) {
+                //   tilemap.SetTile(position, aliveTile);
+                //} 
+                //else {
+                //  tilemap.SetTile(position, deadTile);
+                //}
+                if(newGrid[i, c] == 1) {
+                    tilemap.SetTile(position, aliveTile); 
+                } else if(i > 0 && newGrid[i, c] == 0 && thegrid[i, c] == 0) {
                     tilemap.SetTile(position, deadTile);
                 }
             }
         }
-        Array.Copy(newGrid, thegrid,newGrid.Length);
+        //Array.Copy(newGrid, thegrid,newGrid.Length);
+        for(int i = 0; i < rows; i++) {
+            for(int c = 0; c < columns; c++) {
+                thegrid[i, c] = newGrid[i, c];
+            }
+        }
     }
+
+
 }
 
 //reference to inputsField
