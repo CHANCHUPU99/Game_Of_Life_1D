@@ -17,4 +17,7 @@ public class GoToPlayScene : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
 
     }
+    public void goToInstructions() {
+        SceneManager.LoadScene("Instructions");
+    }
 }
